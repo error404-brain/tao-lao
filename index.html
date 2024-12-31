@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bìa Thư Tình</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+       body {
+            background: linear-gradient(120deg, #ff9a9e, #fad0c4);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0;
+            font-family: Arial, sans-serif;
+            overflow: hidden;
+            padding: 0; /* Đảm bảo không có padding */
+        }
+        .container {
+            text-align: center;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%); /* Căn giữa chính xác */
+        }
+        .envelope {
+            width: 350px; 
+            height: 250px; 
+            position: relative;
+            background: #ffebee;
+            border-radius: 10px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+            perspective: 1000px;
+            animation: bounce 2s infinite;
+        }
+
+
+        .flap {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #f06292;
+            clip-path: polygon(0 0, 100% 0, 50% 100%);
+            transform-origin: top;
+            transition: transform 0.6s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+        }
+
+        .envelope.open .flap {
+            transform: rotateX(-180deg);
+        }
+
+        .letter {
+            position: absolute;
+            width: 90%; 
+            height: 90%; 
+            top: 5%;
+            left: 5%;
+            background: white;
+            border-radius: 5px;
+            padding: 25px; /* Tăng padding để thư lớn hơn */
+            text-align: left; /* Căn chỉnh văn bản bên trái */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            opacity: 0;
+            transform: translateY(50px) scale(0.9);
+            transition: opacity 0.5s, transform 0.6s;
+            overflow-y: auto;
+            max-height: 80%; /* Đảm bảo thư không bị tràn */
+            font-size: 1.2rem; /* Tăng kích thước chữ */
+        }
+
+        .envelope.open .letter {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+
+        .letter h2 {
+            color: #e91e63;
+            margin-bottom: 15px;
+            font-size: 1.5rem;
+            animation: pulse 1.5s infinite;
+        }
+
+        .heart {
+            font-size: 40px;
+            color: red;
+            margin-bottom: 10px;
+        }
+
+        .btn-container {
+            display: none;
+            margin-top: 20px;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .btn {
+            border-radius: 30px;
+            padding: 10px 20px;
+            transition: all 0.3s ease;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn-open {
+            animation: heartbeat 2s infinite;
+            font-size: 1.1rem;
+            padding: 12px 25px;
+        }
+
+        @keyframes heartbeat {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.1);
+            }
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.1);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        @keyframes bounce {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container text-center">
+        <button class="btn btn-open mb-3 btn-primary" id="openButton">Mở thư</button>
+
+        <div class="envelope mx-auto" id="envelope">
+            <div class="flap"></div>
+            <div class="letter">
+                <h2>Gửi em yêu của tôi!</h2>
+                <div class="heart">❤️</div>
+                <p>
+                    Em à, anh cảm thấy thật may mắn và biết ơn khi cuộc sống đã đưa chúng ta đến với nhau. 
+                </p>
+                <p>
+                    Anh cảm thấy như mọi thứ trở nên ý nghĩa hơn từ khi có em bên cạnh. Anh muốn dành cả cuộc đời mình để bên em, 
+                    cùng em trải qua những niềm vui, nỗi buồn và viết nên một câu chuyện thật đẹp của chúng ta.
+                </p>
+                <p>
+                    Hy vọng chúng ta sẽ luôn bên nhau, cùng nhau vượt qua mọi thử thách, và cùng chia sẻ những điều tuyệt vời trong cuộc sống. 
+                    Anh yêu em rất nhiều và mong muốn mãi mãi được ở bên em.
+                </p>
+                <p class="text-end">
+                    Anh yêu em nhiều lắm, và sẽ luôn bên em , và xem đây là lời tỏ tình của anh nhá. ❤️
+                </p>
+            </div>
+        </div>
+        
+        
+
+        <div class="btn-container" id="responseButtons">
+            <button class="btn btn-success" id="acceptButton">Đồng ý</button>
+            <button class="btn btn-danger" id="declineButton">Từ chối</button>
+        </div>
+    </div>
+
+    <div class="modal fade" id="thankYouModal" tabindex="-1" aria-labelledby="thankYouLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="thankYouLabel">Cảm ơn em!</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Vậy từ hôm nay em là người yêu của anh rồi đúng không? ❤️
+                    Anh cảm thấy rất hạnh phúc và may mắn khi được ở bên em. Chúc em năm 2025 thật vui vẻ, tràn ngập niềm vui và hạnh phúc.
+                    Anh sẽ luôn bên em, cùng em vượt qua mọi thử thách và viết nên những kỷ niệm em nhá.
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Đóng</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+
+    <div class="modal fade" id="sorryModal" tabindex="-1" aria-labelledby="sorryLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="sorryLabel">Từ chối à?</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Em chắc chưa? Đụ má vãi lồn vậy em ,chơi vậy ai chơi bấm đồng ý đi má, thứ gì á bấm <strong>Đồng ý</strong> đi ba! 🥺
+                    <br><br>
+                    <button class="btn btn-success w-100" id="retryAcceptButton">Đồng ý</button>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        const openButton = document.getElementById('openButton');
+        const envelope = document.getElementById('envelope');
+        const responseButtons = document.getElementById('responseButtons');
+
+        const acceptButton = document.getElementById('acceptButton');
+        const declineButton = document.getElementById('declineButton');
+        const retryAcceptButton = document.getElementById('retryAcceptButton');
+
+        openButton.addEventListener('click', function () {
+            envelope.classList.add('open');
+            setTimeout(() => {
+                responseButtons.style.display = 'flex';
+            }, 600);
+        });
+
+        acceptButton.addEventListener('click', () => {
+            const thankYouModal = new bootstrap.Modal(document.getElementById('thankYouModal'));
+            thankYouModal.show();
+        });
+
+        declineButton.addEventListener('click', () => {
+            const sorryModal = new bootstrap.Modal(document.getElementById('sorryModal'));
+            sorryModal.show();
+        });
+
+        retryAcceptButton.addEventListener('click', () => {
+            const thankYouModal = new bootstrap.Modal(document.getElementById('thankYouModal'));
+            thankYouModal.show();
+        });
+    </script>
+</body>
+</html>
